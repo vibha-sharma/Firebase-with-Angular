@@ -1,0 +1,65 @@
+<div class="alert alert-info">{{ firebaseHeading }}</div>
+<h4>{{ titleHeading }}</h4>
+<form
+  [formGroup]="itemInfoForm"
+  (ngSubmit)="addDetail(itemInfoForm.value)"
+  class="col-sm-12 row"
+>
+  <div class="form-group col-sm-4">
+    <label for="name">Enter Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Name"
+      id="name"
+      name="name"
+      formControlName="name"
+    />
+  </div>
+  <div class="form-group col-sm-4">
+    <label for="title">Enter Title:</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Title"
+      id="title"
+      name="title"
+      formControlName="title"
+    />
+  </div>
+  <div class="form-group col-sm-4">
+    <label for="price">Enter Price:</label>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Enter Price"
+      id="price"
+      name="price"
+      formControlName="price"
+    />
+  </div>
+  <button type="submit" class="btn btn-info">
+    Submit
+  </button>
+</form>
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Price</th>
+  </thead>
+  <tbody *ngIf="getItems?.length > 0; else noItems">
+    <tr *ngFor="let items of getItems">
+      <td><input type="text" [(ngModel)]="items.name" /></td>
+      <td>{{ items.title }}</td>
+      <td>{{ items.price }}</td>
+      <td>
+        <fa-icon [icon]="editIcon" (click)="editItem(items)"></fa-icon>
+        <fa-icon [icon]="removeIcon" (click)="removeItem(items)"></fa-icon>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #noItems>
+  <h5>There are no items to list.</h5>
+</ng-template>

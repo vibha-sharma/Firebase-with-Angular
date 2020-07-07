@@ -1,0 +1,104 @@
+<div class="alert alert-info">{{ firebaseHeading }}</div>
+<h4>{{ titleHeading }}</h4>
+<form
+  [formGroup]="coursesInfoForm"
+  (ngSubmit)="addDetail(coursesInfoForm.value)"
+  class="col-sm-12 row"
+>
+  <div class="form-group col-sm-4">
+    <label for="name">Enter Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Name"
+      id="name"
+      name="name"
+      formControlName="name"
+    />
+  </div>
+  <div class="form-group col-sm-4">
+    <label for="title">Enter Title:</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Title"
+      id="title"
+      name="title"
+      formControlName="title"
+    />
+  </div>
+  <div class="form-group col-sm-4">
+    <label for="price">Enter Price:</label>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Enter Price"
+      id="price"
+      name="price"
+      formControlName="price"
+    />
+  </div>
+  <button type="submit" class="btn btn-info">
+    Submit
+  </button>
+</form>
+<!-- <div class="row">
+  <div class="form-group col-sm-4">
+    <label for="name">Enter Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Name"
+      id="name"
+      [(ngModel)]="name"
+      name="name"
+    />
+  </div>
+  <div class="form-groupcol-sm-4">
+    <label for="title">Enter Title:</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Title"
+      id="title"
+      [(ngModel)]="title"
+      name="title"
+    />
+  </div>
+  <div class="form-group col-sm-4">
+    <label for="price">Enter Price:</label>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Enter Price"
+      id="price"
+      [(ngModel)]="price"
+      name="price"
+    />
+  </div>
+  <button type="submit" class="btn btn-info" (click)="addDetail()">
+    Submit
+  </button>
+</div> -->
+<table class="table table-striped table-hover">
+  <thead>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Price</th>
+    <th>Update</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of getCourses">
+      <td>{{ course.payload.courseinfo.name }}</td>
+      <td>{{ course.payload.courseinfo.title }}</td>
+      <td>{{ course.payload.courseinfo.price }}</td>
+      <td>
+        <fa-icon [icon]="editIcon"></fa-icon>
+        <fa-icon
+          [icon]="removeIcon"
+          (click)="removeDetail($event, course)"
+        ></fa-icon>
+      </td>
+    </tr>
+  </tbody>
+</table>
