@@ -39,47 +39,9 @@
     />
   </div>
   <button type="submit" class="btn btn-info">
-    Submit
+    Add Item
   </button>
 </form>
-<!-- <div class="row">
-  <div class="form-group col-sm-4">
-    <label for="name">Enter Name:</label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Enter Name"
-      id="name"
-      [(ngModel)]="name"
-      name="name"
-    />
-  </div>
-  <div class="form-groupcol-sm-4">
-    <label for="title">Enter Title:</label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Enter Title"
-      id="title"
-      [(ngModel)]="title"
-      name="title"
-    />
-  </div>
-  <div class="form-group col-sm-4">
-    <label for="price">Enter Price:</label>
-    <input
-      type="number"
-      class="form-control"
-      placeholder="Enter Price"
-      id="price"
-      [(ngModel)]="price"
-      name="price"
-    />
-  </div>
-  <button type="submit" class="btn btn-info" (click)="addDetail()">
-    Submit
-  </button>
-</div> -->
 <table class="table table-striped table-hover">
   <thead>
     <th>Name</th>
@@ -87,18 +49,55 @@
     <th>Price</th>
     <th>Update</th>
   </thead>
-  <tbody>
+  <tbody *ngIf="getCourses?.length > 0; else noItems">
     <tr *ngFor="let course of getCourses">
-      <td>{{ course.payload.courseinfo.name }}</td>
-      <td>{{ course.payload.courseinfo.title }}</td>
-      <td>{{ course.payload.courseinfo.price }}</td>
       <td>
-        <fa-icon [icon]="editIcon"></fa-icon>
+        <input
+          [ngClass]="{ noInput: courseToEdit.id != course.id }"
+          type="text"
+          [(ngModel)]="course.payload.courseinfo.name"
+          [readonly]="courseToEdit.id != course.id"
+        />
+        <button
+          class="btn btn-info update-item"
+          (click)="updateCourse(course)"
+          *ngIf="editState && courseToEdit.id == course.id"
+        >
+          Update Item
+        </button>
         <fa-icon
-          [icon]="removeIcon"
+          [icon]="cancelIcon"
+          (click)="cancel()"
+          *ngIf="editState && courseToEdit.id == course.id"
+          class="cancel-icon"
+        ></fa-icon>
+      </td>
+      <td>
+        <input
+          [ngClass]="{ noInput: courseToEdit.id != course.id }"
+          type="text"
+          [(ngModel)]="course.payload.courseinfo.title"
+          [readonly]="courseToEdit.id != course.id"
+        />
+      </td>
+      <td>
+        <input
+          [ngClass]="{ noInput: courseToEdit.id != course.id }"
+          type="text"
+          [(ngModel)]="course.payload.courseinfo.price"
+          [readonly]="courseToEdit.id != course.id"
+        />
+      </td>
+      <td>
+        <fa-icon [icon]="editIcon" (click)="editCourse(course)"></fa-icon>
+        <fa-icon
+          [icon]="deleteIcon"
           (click)="removeDetail($event, course)"
         ></fa-icon>
       </td>
     </tr>
   </tbody>
 </table>
+<ng-template #noItems>
+  <div class="text-center">There are no items to list.</div>
+</ng-template>

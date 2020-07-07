@@ -3,7 +3,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 
-import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEdit,
+  faTimes,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   AngularFirestore,
@@ -18,18 +22,22 @@ import { items } from '../../item';
 })
 export class FirebaseCloudFirestoreComponent implements OnInit {
   editIcon = faEdit;
-  removeIcon = faTimes;
+  deleteIcon = faTimes;
+  cancelIcon = faTimesCircle;
   firebaseHeading: string = 'Cloud Firestore Database';
   titleHeading: string = 'Add Item in Cloud Firestore Database';
   itemCollection: AngularFirestoreCollection<items>;
   itemDoc: AngularFirestoreDocument<items>;
-  items: Observable<items[]>;
+  //Items: items[];
   getItems: items[] = [];
   itemInfoForm;
+  editState: boolean = false;
+  itemToEdit: any = { id: '' };
 
   constructor(private afs: AngularFirestore, private formBuilder: FormBuilder) {
     this.itemCollection = this.afs.collection('items');
     this.itemCollection.snapshotChanges().subscribe((changes) => {
+      this.getItems = [];
       return changes.map((a) => {
         const data = a.payload.doc.data() as items;
         data.id = a.payload.doc.id;
@@ -39,19 +47,33 @@ export class FirebaseCloudFirestoreComponent implements OnInit {
     this.itemInfoForm = this.formBuilder.group({
       name: '',
       title: '',
-      price: 0,
+      price: '',
     });
   }
 
   ngOnInit(): void {}
-  addDetail(itemsInfo) {
+  addDetail(itemsInfo: items) {
     this.itemCollection.add(itemsInfo);
     this.itemInfoForm.reset();
     this.getItems = [];
   }
-  removeItem(item) {
+  removeItem(item: items) {
     this.itemDoc = this.afs.doc(`items/${item.id}`);
     this.itemDoc.delete();
     this.getItems = [];
+  }
+  editItem(item: items) {
+    this.itemToEdit = item;
+    this.editState = true;
+  }
+  updateItem(item: items) {
+    this.itemDoc = this.afs.doc(`items/${item.id}`);
+    this.itemDoc.update(item);
+    this.editState = false;
+    this.itemToEdit.id = '';
+  }
+  cancel() {
+    this.editState = false;
+    this.itemToEdit.id = '';
   }
 }

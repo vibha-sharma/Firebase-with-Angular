@@ -39,7 +39,7 @@
     />
   </div>
   <button type="submit" class="btn btn-info">
-    Submit
+    Add Item
   </button>
 </form>
 <table class="table table-striped">
@@ -47,19 +47,54 @@
     <th>Name</th>
     <th>Title</th>
     <th>Price</th>
+    <th>Update</th>
   </thead>
   <tbody *ngIf="getItems?.length > 0; else noItems">
     <tr *ngFor="let items of getItems">
-      <td><input type="text" [(ngModel)]="items.name" /></td>
-      <td>{{ items.title }}</td>
-      <td>{{ items.price }}</td>
+      <td>
+        <input
+          [ngClass]="{ noInput: itemToEdit.id != items.id }"
+          type="text"
+          [(ngModel)]="items.name"
+          [readonly]="itemToEdit.id != items.id"
+        />
+        <button
+          class="btn btn-info update-item"
+          (click)="updateItem(items)"
+          *ngIf="editState && itemToEdit.id == items.id"
+        >
+          Update Item
+        </button>
+        <fa-icon
+          [icon]="cancelIcon"
+          (click)="cancel()"
+          *ngIf="editState && itemToEdit.id == items.id"
+          class="cancel-icon"
+        ></fa-icon>
+      </td>
+      <td>
+        <input
+          type="text"
+          [(ngModel)]="items.title"
+          [ngClass]="{ noInput: itemToEdit.id != items.id }"
+          [readonly]="itemToEdit.id != items.id"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          [(ngModel)]="items.price"
+          [ngClass]="{ noInput: itemToEdit.id != items.id }"
+          [readonly]="itemToEdit.id != items.id"
+        />
+      </td>
       <td>
         <fa-icon [icon]="editIcon" (click)="editItem(items)"></fa-icon>
-        <fa-icon [icon]="removeIcon" (click)="removeItem(items)"></fa-icon>
+        <fa-icon [icon]="deleteIcon" (click)="removeItem(items)"></fa-icon>
       </td>
     </tr>
   </tbody>
 </table>
 <ng-template #noItems>
-  <h5>There are no items to list.</h5>
+  <div class="text-center">There are no items to list.</div>
 </ng-template>
