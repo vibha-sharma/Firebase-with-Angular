@@ -78,6 +78,6 @@ export class FirebaseCloudFirestoreComponent implements OnInit {
   }
   cancel() {
     this.editState = false;
-    this.itemToEdit.id = '';
+    this.itemToEdit = { id: '' };
   }
 }
