@@ -1,5 +1,5 @@
-<div class="alert alert-info">{{ firebaseHeading }}</div>
-<h4>{{ titleHeading }}</h4>
+<div class="alert alert-info">{{ fireCBHeading }}</div>
+<h4>{{ titleCBHeading }}</h4>
 <form
   [formGroup]="itemInfoForm"
   (ngSubmit)="addDetail(itemInfoForm.value)"
@@ -44,10 +44,7 @@
 </form>
 <table class="table table-striped">
   <thead>
-    <th>Name</th>
-    <th>Title</th>
-    <th>Price</th>
-    <th>Update</th>
+    <th *ngFor="let header of tableHeader">{{ header }}</th>
   </thead>
   <tbody *ngIf="getItems?.length > 0; else noItems">
     <tr *ngFor="let items of getItems">

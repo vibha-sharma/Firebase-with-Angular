@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 
@@ -15,7 +15,10 @@ import { items } from '../../item';
 @Component({
   selector: 'app-firebase-real-timedata',
   templateUrl: './firebase-real-timedata.component.html',
-  styleUrls: ['./firebase-real-timedata.component.less'],
+  styleUrls: [
+    '../firebase-shared/firebase-shared.component.less',
+    './firebase-real-timedata.component.less',
+  ],
 })
 export class FirebaseRealTimedataComponent implements OnInit {
   editIcon = faEdit;
@@ -23,8 +26,10 @@ export class FirebaseRealTimedataComponent implements OnInit {
   cancelIcon = faTimesCircle;
   // Todo Create
   getCourses: any = [];
-  firebaseHeading: string = 'Realtime Database';
-  titleHeading: string = 'Add Item in Realtime Database';
+  @Input() fireRBHeading = '';
+  @Input() titleRBHeading = '';
+  @Input() tableHeader = [];
+  //@Input() FBNameLabel;
   itemCollection: any;
   coursesInfoForm;
   editState: boolean = false;

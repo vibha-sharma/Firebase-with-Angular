@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
@@ -18,14 +18,18 @@ import { items } from '../../item';
 @Component({
   selector: 'app-firebase-cloud-firestore',
   templateUrl: './firebase-cloud-firestore.component.html',
-  styleUrls: ['./firebase-cloud-firestore.component.less'],
+  styleUrls: [
+    '../firebase-shared/firebase-shared.component.less',
+    './firebase-cloud-firestore.component.less',
+  ],
 })
 export class FirebaseCloudFirestoreComponent implements OnInit {
   editIcon = faEdit;
   deleteIcon = faTimes;
   cancelIcon = faTimesCircle;
-  firebaseHeading: string = 'Cloud Firestore Database';
-  titleHeading: string = 'Add Item in Cloud Firestore Database';
+  @Input() fireCBHeading = '';
+  @Input() titleCBHeading = '';
+  @Input() tableHeader = [];
   itemCollection: AngularFirestoreCollection<items>;
   itemDoc: AngularFirestoreDocument<items>;
   //Items: items[];
